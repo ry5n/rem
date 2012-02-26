@@ -1,14 +1,21 @@
 .foo {
   font-size: 16px;
-  font-size: 1.6rem;
+  font-size: 1rem;
 }
 
 .bar {
-  margin: 15px 0 15px 0;
-  margin:  1.5rem 0 1.5rem 0;
+  margin: 15px auto 0;
+  margin: 0.938rem auto 0;
 }
 
 .baz {
   padding: 5px 15px 5px 15px;
-  padding:  0.5rem 1.5rem 0.5rem 1.5rem;
+  padding: 0.313rem 0.938rem 0.313rem 0.938rem;
+  margin: 8px 0 4px;
+  margin: 0.5rem 0 0.25rem;
+}
+
+.quux {
+  border: 1px solid #cccccc;
+  border: 0.063rem solid #cccccc;
 }

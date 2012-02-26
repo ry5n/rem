@@ -5,10 +5,7 @@ $base-font-size: 16px !default;
 
 
 // Print the given value in rem units with a fallback declaration in pixels.
-// Accepts $values in px or rem. Rem values are accepted so that functions or
-// mixins that perform computations and unit conversions (eg. vertical rhythm mixins)
-// can operate on and return rems without caring about fallbacks, but we can still 
-// generate our fallbacks from the returned values.
+// Accepts $values in px (or rem for convenience).
 //
 // $property - The css property name to set in rems
 // $values - The value (or space-separated list of values) for $property. If a list is passed, 
@@ -19,26 +16,27 @@ $base-font-size: 16px !default;
 
 @mixin rem($property, $values) {
   
-  // In-scope place to store the unit used in $values
+  // Find out what unit was passed
   $unit: "";
-  
-  // Make sure all the $values have the same unit.
   @if type-of($values) == "list" {
-  	$unit: unit( nth($values, 1) );
-  	@each $value in $values {
-			@if type-of($value) == number and unit($value) != $unit {
-				@warn "Values passed to function rem must all use the same unit or be unitless";
-			}
+  	$i: 1;
+  	$exit: false;
+  	@while $i <= length($values) and not $exit {
+  		$value: nth($values, $i);
+  		@if type-of($value) == "number" and not unitless($value) {
+  			$unit: unit($value);
+  			$exit: true;
+  		}
   	}
+  } @else {
+  	$unit: unit($values);
   }
-  @else { $unit: unit($values); }
   
   // Use the conversion mixin for the appropriate input unit.
-  @if $unit == "px" {
-  	@include px-to-rem($property, $values);
-  }
   @if $unit == "rem" {
   	@include rem-to-px($property, $values);
+  } @else {
+  	@include px-to-rem($property, $values);
   }
 }
 
@@ -67,14 +65,14 @@ $base-font-size: 16px !default;
     $rem-values: unquote("");
     @each $value in $px-values {
       // If the value is zero, a string or a color, leave it be.
-      // Allows us to do this: +px-to-rem(border, 1px solid #ccc)
       @if $value == 0 or type-of($value) == "string" or type-of($value) == "color" {
         $rem-values: append($rem-values, $value);
-      }
-      @else {
+      } @else {
         $rem-values: append($rem-values, $value / $px-to-rem-ratio);
       }
     }
+    $rem-values: top($rem-values);
+    
     // Print the property and its list of converted values.
     #{$property}: $rem-values;
   }
@@ -102,18 +100,36 @@ $base-font-size: 16px !default;
     $px-values: unquote("");
     @each $value in $rem-values {
       // If the value is zero, a string or a color, leave it be.
-      // Allows us to do this: +rem-to-px(border, .0625rem solid #ccc)
-      @if $value == 0 or type-of($value) == string or type-of($value) == color {
+      @if $value == 0 or type-of($value) == "string" or type-of($value) == "color" {
         $px-values: append($px-values, $value);
-      }
-      @else {
+      } @else {
         $px-values: append($px-values, $value / $rem-to-px-ratio);
       }
     }
+    $px-values: top($px-values);
+    
     // Print the property and its list of converted values.
     #{$property}: $px-values;
   }
   
   // Put the rem values in place at the end, to override pixels in capable browsers.
   #{$property}: $rem-values;
+}
+
+// Remove the first item of a list and return the result; equivalent to 
+// unshift in javascript. Required to get rid of the empty first item
+// in a SassScript list created with `$new-list: unquote("")`.
+//
+// The full complement of symmetrical list functions would be:
+// @function append($list, $value) // exists!
+// @function prepend($list, $value) // doesn't exist, but would be easy to make
+// @function top($list)
+// @function tail($list) // removes the last item in a list
+
+@function top($list) {
+	$output: nth($list, 2);
+	@for $i from 3 through length($list) {
+		$output: append($output, nth($list, $i));
+	}
+	@return $output;
 }
