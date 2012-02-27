@@ -15,7 +15,6 @@ $base-font-size: 16px !default;
 //           etc.
 
 @mixin rem($property, $values) {
-  
   // Find out what unit was passed
   $unit: "";
   @if type-of($values) == "list" {
@@ -47,7 +46,6 @@ $base-font-size: 16px !default;
 // $px-values - The value or values (space-separated list) for $property, in pixels
 
 @mixin px-to-rem($property, $px-values) {
-  
   // Number of pixels in 1rem (default: 16px/rem)
   // When converting to rems, we must divide by this ratio.
   $px-per-rem: $base-font-size / 1rem;
@@ -59,8 +57,8 @@ $base-font-size: 16px !default;
   @if type-of($px-values) == "number" {
     #{$property}: $px-values / $px-per-rem;
   }
-  // Otherwise, we've got a list and we'll need to convert each value in turn.
   @else {
+    // Otherwise, we've got a list and we'll need to convert each value in turn.
     // Create an empty list that we can dump values into.
     $rem-values: unquote("");
     @each $value in $px-values {
@@ -85,7 +83,6 @@ $base-font-size: 16px !default;
 // $px-values - The value or values (space-separated list) for $property, in pixels
 
 @mixin rem-to-px($property, $rem-values) {
-  
   // Number of rems in 1px (default: 0.0625rem/px)
   // When converting to pixels, we must divide by this ratio.
   $rem-per-px: 1rem / $base-font-size;
@@ -94,8 +91,8 @@ $base-font-size: 16px !default;
   @if type-of($rem-values) == "number" {
     #{$property}: $rem-values / $rem-per-px;
   }
-  // Otherwise, we've got a list and we'll need to convert each value in turn.
   @else {
+    // Otherwise, we've got a list and we'll need to convert each value in turn.
     // Create an empty list that we can dump values into.
     $px-values: unquote("");
     @each $value in $rem-values {
