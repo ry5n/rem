@@ -41,12 +41,12 @@ $base-font-size: 16px !default
 =px-to-rem($property, $px-values)
   // Number of pixels in 1rem (default: 16px/rem)
   // When converting to rems, we must divide by this ratio.
-  $px-to-rem-ratio: $base-font-size / 1rem
+  $px-per-rem: $base-font-size / 1rem
   // Print the pixel fallback declaration first so we can override it in capable browsers.
   #{$property}: $px-values
   // If there is only one value, print the declaration with the value converted to rems.
   @if type-of($px-values) == "number"
-    #{$property}: $px-values / $px-to-rem-ratio
+    #{$property}: $px-values / $px-per-rem
   @else
     // Otherwise, we've got a list and we'll need to convert each value in turn.
     // Create an empty list that we can dump values into.
@@ -56,7 +56,7 @@ $base-font-size: 16px !default
       @if $value == 0 or type-of($value) == "string" or type-of($value) == "color"
         $rem-values: append($rem-values, $value)
       @else
-        $rem-values: append($rem-values, $value / $px-to-rem-ratio)
+        $rem-values: append($rem-values, $value / $px-per-rem)
     $rem-values: top($rem-values)
     // Print the property and its list of converted values.
     #{$property}: $rem-values
@@ -70,10 +70,10 @@ $base-font-size: 16px !default
 =rem-to-px($property, $rem-values)
   // Number of rems in 1px (default: 0.0625rem/px)
   // When converting to pixels, we must divide by this ratio.
-  $rem-to-px-ratio: 1rem / $base-font-size
+  $rem-per-px: 1rem / $base-font-size
   // If there is only one value, print the declaration with the value converted to px.
   @if type-of($rem-values) == "number"
-    #{$property}: $rem-values / $rem-to-px-ratio
+    #{$property}: $rem-values / $rem-per-px
   @else
     // Otherwise, we've got a list and we'll need to convert each value in turn.
     // Create an empty list that we can dump values into.
@@ -83,7 +83,7 @@ $base-font-size: 16px !default
       @if $value == 0 or type-of($value) == "string" or type-of($value) == "color"
         $px-values: append($px-values, $value)
       @else
-        $px-values: append($px-values, $value / $rem-to-px-ratio)
+        $px-values: append($px-values, $value / $rem-per-px)
     $px-values: top($px-values)
     // Print the property and its list of converted values.
     #{$property}: $px-values
@@ -91,7 +91,7 @@ $base-font-size: 16px !default
   #{$property}: $rem-values
 
 // Remove the first item of a list and return the result; equivalent to 
-// unshift in javascript. Required to get rid of the empty first item
+// `unshift` in javascript. Required to get rid of the empty first item
 // in a SassScript list created with `$new-list: unquote("")`.
 //
 // The full complement of symmetrical list functions would be:
@@ -101,7 +101,9 @@ $base-font-size: 16px !default
 // @function tail($list) // removes the last item in a list
 
 @function top($list)
+  // Create a new list containing the 2nd item from the initial list.
   $output: nth($list, 2)
+  // Copy over the remaining desired list items (3rd through last).
   @for $i from 3 through length($list)
     $output: append($output, nth($list, $i))
   @return $output
