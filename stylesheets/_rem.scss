@@ -9,35 +9,35 @@ $base-font-size: 16px !default;
 //
 // $property - The css property name to set in rems
 // $values - The value (or space-separated list of values) for $property. If a list is passed, 
-//						each value must be of the same unit or a unitless value. Allowed values lists include:
-//					 1px solid #ccc
-//					 1px auto 3px 0
-//					 etc.
+//           each value must be of the same unit or a unitless value. Allowed values lists include:
+//           1px solid #ccc
+//           1px auto 3px 0
+//           etc.
 
 @mixin rem($property, $values) {
-	
-	// Find out what unit was passed
-	$unit: "";
-	@if type-of($values) == "list" {
-		$i: 1;
-		$exit: false;
-		@while $i <= length($values) and not $exit {
-			$value: nth($values, $i);
-			@if type-of($value) == "number" and not unitless($value) {
-				$unit: unit($value);
-				$exit: true;
-			}
-		}
-	} @else {
-		$unit: unit($values);
-	}
-	
-	// Use the conversion mixin for the appropriate input unit.
-	@if $unit == "rem" {
-		@include rem-to-px($property, $values);
-	} @else {
-		@include px-to-rem($property, $values);
-	}
+  
+  // Find out what unit was passed
+  $unit: "";
+  @if type-of($values) == "list" {
+    $i: 1;
+    $exit: false;
+    @while $i <= length($values) and not $exit {
+      $value: nth($values, $i);
+      @if type-of($value) == "number" and not unitless($value) {
+        $unit: unit($value);
+        $exit: true;
+      }
+    }
+  } @else {
+    $unit: unit($values);
+  }
+  
+  // Use the conversion mixin for the appropriate input unit.
+  @if $unit == "rem" {
+    @include rem-to-px($property, $values);
+  } @else {
+    @include px-to-rem($property, $values);
+  }
 }
 
 // Print rem values with pixel fallback from *pixel* values.
@@ -47,35 +47,35 @@ $base-font-size: 16px !default;
 // $px-values - The value or values (space-separated list) for $property, in pixels
 
 @mixin px-to-rem($property, $px-values) {
-	
-	// Number of pixels in 1rem (default: 16px/rem)
-	// When converting to rems, we must divide by this ratio.
-	$px-per-rem: $base-font-size / 1rem;
-	
-	// Print the pixel fallback declaration first so we can override it in capable browsers.
-	#{$property}: $px-values;
-	
-	// If there is only one value, print the declaration with the value converted to rems.
-	@if type-of($px-values) == "number" {
-		#{$property}: $px-values / $px-per-rem;
-	}
-	// Otherwise, we've got a list and we'll need to convert each value in turn.
-	@else {
-		// Create an empty list that we can dump values into.
-		$rem-values: unquote("");
-		@each $value in $px-values {
-			// If the value is zero, a string or a color, leave it be.
-			@if $value == 0 or type-of($value) == "string" or type-of($value) == "color" {
-				$rem-values: append($rem-values, $value);
-			} @else {
-				$rem-values: append($rem-values, $value / $px-per-rem);
-			}
-		}
-		$rem-values: top($rem-values);
-		
-		// Print the property and its list of converted values.
-		#{$property}: $rem-values;
-	}
+  
+  // Number of pixels in 1rem (default: 16px/rem)
+  // When converting to rems, we must divide by this ratio.
+  $px-per-rem: $base-font-size / 1rem;
+  
+  // Print the pixel fallback declaration first so we can override it in capable browsers.
+  #{$property}: $px-values;
+  
+  // If there is only one value, print the declaration with the value converted to rems.
+  @if type-of($px-values) == "number" {
+    #{$property}: $px-values / $px-per-rem;
+  }
+  // Otherwise, we've got a list and we'll need to convert each value in turn.
+  @else {
+    // Create an empty list that we can dump values into.
+    $rem-values: unquote("");
+    @each $value in $px-values {
+      // If the value is zero, a string or a color, leave it be.
+      @if $value == 0 or type-of($value) == "string" or type-of($value) == "color" {
+        $rem-values: append($rem-values, $value);
+      } @else {
+        $rem-values: append($rem-values, $value / $px-per-rem);
+      }
+    }
+    $rem-values: top($rem-values);
+    
+    // Print the property and its list of converted values.
+    #{$property}: $rem-values;
+  }
 }
 
 // Print rem values with pixel fallback from *rem* values.
@@ -85,35 +85,35 @@ $base-font-size: 16px !default;
 // $px-values - The value or values (space-separated list) for $property, in pixels
 
 @mixin rem-to-px($property, $rem-values) {
-	
-	// Number of rems in 1px (default: 0.0625rem/px)
-	// When converting to pixels, we must divide by this ratio.
-	$rem-per-px: 1rem / $base-font-size;
-	
-	// If there is only one value, print the declaration with the value converted to px.
-	@if type-of($rem-values) == "number" {
-		#{$property}: $rem-values / $rem-per-px;
-	}
-	// Otherwise, we've got a list and we'll need to convert each value in turn.
-	@else {
-		// Create an empty list that we can dump values into.
-		$px-values: unquote("");
-		@each $value in $rem-values {
-			// If the value is zero, a string or a color, leave it be.
-			@if $value == 0 or type-of($value) == "string" or type-of($value) == "color" {
-				$px-values: append($px-values, $value);
-			} @else {
-				$px-values: append($px-values, $value / $rem-per-px);
-			}
-		}
-		$px-values: top($px-values);
-		
-		// Print the property and its list of converted values.
-		#{$property}: $px-values;
-	}
-	
-	// Put the rem values in place at the end, to override pixels in capable browsers.
-	#{$property}: $rem-values;
+  
+  // Number of rems in 1px (default: 0.0625rem/px)
+  // When converting to pixels, we must divide by this ratio.
+  $rem-per-px: 1rem / $base-font-size;
+  
+  // If there is only one value, print the declaration with the value converted to px.
+  @if type-of($rem-values) == "number" {
+    #{$property}: $rem-values / $rem-per-px;
+  }
+  // Otherwise, we've got a list and we'll need to convert each value in turn.
+  @else {
+    // Create an empty list that we can dump values into.
+    $px-values: unquote("");
+    @each $value in $rem-values {
+      // If the value is zero, a string or a color, leave it be.
+      @if $value == 0 or type-of($value) == "string" or type-of($value) == "color" {
+        $px-values: append($px-values, $value);
+      } @else {
+        $px-values: append($px-values, $value / $rem-per-px);
+      }
+    }
+    $px-values: top($px-values);
+    
+    // Print the property and its list of converted values.
+    #{$property}: $px-values;
+  }
+  
+  // Put the rem values in place at the end, to override pixels in capable browsers.
+  #{$property}: $rem-values;
 }
 
 // Remove the first item of a list and return the result; equivalent to 
@@ -127,11 +127,11 @@ $base-font-size: 16px !default;
 // @function tail($list) // removes the last item in a list
 
 @function top($list) {
-	// Create a new list containing the 2nd item from the initial list.
-	$output: nth($list, 2);
-	// Copy over the remaining desired list items (3rd through last).
-	@for $i from 3 through length($list) {
-		$output: append($output, nth($list, $i));
-	}
-	@return $output;
+  // Create a new list containing the 2nd item from the initial list.
+  $output: nth($list, 2);
+  // Copy over the remaining desired list items (3rd through last).
+  @for $i from 3 through length($list) {
+    $output: append($output, nth($list, $i));
+  }
+  @return $output;
 }
