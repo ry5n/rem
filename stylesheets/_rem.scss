@@ -60,7 +60,7 @@ $base-font-size: 16px !default;
   @else {
     // Otherwise, we've got a list and we'll need to convert each value in turn.
     // Create an empty list that we can dump values into.
-    $rem-values: unquote("");
+    $rem-values: ();
     @each $value in $px-values {
       // If the value is zero, a string or a color, leave it be.
       @if $value == 0 or type-of($value) == "string" or type-of($value) == "color" {
@@ -69,8 +69,7 @@ $base-font-size: 16px !default;
         $rem-values: append($rem-values, $value / $px-per-rem);
       }
     }
-    $rem-values: top($rem-values);
-    
+        
     // Print the property and its list of converted values.
     #{$property}: $rem-values;
   }
@@ -94,7 +93,7 @@ $base-font-size: 16px !default;
   @else {
     // Otherwise, we've got a list and we'll need to convert each value in turn.
     // Create an empty list that we can dump values into.
-    $px-values: unquote("");
+    $px-values: ();
     @each $value in $rem-values {
       // If the value is zero, a string or a color, leave it be.
       @if $value == 0 or type-of($value) == "string" or type-of($value) == "color" {
@@ -103,7 +102,6 @@ $base-font-size: 16px !default;
         $px-values: append($px-values, $value / $rem-per-px);
       }
     }
-    $px-values: top($px-values);
     
     // Print the property and its list of converted values.
     #{$property}: $px-values;
@@ -111,24 +109,4 @@ $base-font-size: 16px !default;
   
   // Put the rem values in place at the end, to override pixels in capable browsers.
   #{$property}: $rem-values;
-}
-
-// Remove the first item of a list and return the result; equivalent to 
-// `unshift` in javascript. Required to get rid of the empty first item
-// in a SassScript list created with `$new-list: unquote("")`.
-//
-// The full complement of symmetrical list functions would be:
-// @function append($list, $value) // exists!
-// @function prepend($list, $value) // doesn't exist, but would be easy to make
-// @function top($list)
-// @function tail($list) // removes the last item in a list
-
-@function top($list) {
-  // Create a new list containing the 2nd item from the initial list.
-  $output: nth($list, 2);
-  // Copy over the remaining desired list items (3rd through last).
-  @for $i from 3 through length($list) {
-    $output: append($output, nth($list, $i));
-  }
-  @return $output;
 }
