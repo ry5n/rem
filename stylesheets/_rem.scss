@@ -15,17 +15,21 @@ $base-font-size: 16px !default;
 //           etc.
 
 @mixin rem($property, $values) {
-  // Find out what unit was passed
+  // Find out what unit was passed. Stop as soon as we find a value
+  // with a unit.
   $unit: "";
   @if type-of($values) == "list" {
     $i: 1;
     $exit: false;
     @while $i <= length($values) and not $exit {
       $value: nth($values, $i);
+      // If the value is a number with unit, set $unit and exit
       @if type-of($value) == "number" and not unitless($value) {
         $unit: unit($value);
         $exit: true;
       }
+      // Increment iterator before repeating
+      $i: $i + 1;
     }
   } @else {
     $unit: unit($values);

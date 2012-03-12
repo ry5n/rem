@@ -18,4 +18,8 @@
 .quux {
   border: 1px solid #cccccc;
   border: 0.063rem solid #cccccc;
+  padding: 14px;
+  padding: 0.875rem;
+  margin: 0 0 0 0;
+  margin: 0 0 0 0;
 }

@@ -1,14 +1,19 @@
 @import "../../stylesheets/rem"
 
+@function double($value)
+	@return $value * 2
+
 .foo
-  +rem(font-size, 16px)
+	+rem(font-size, 16px)
 
 .bar
-  +rem(margin, 15px auto 0)
+	+rem(margin, 15px auto 0)
 
 .baz
-  +rem(padding, 5px 15px 5px 15px)
-  +rem(margin, .5rem 0 .25rem)
-  
+	+rem(padding, 5px 15px 5px 15px)
+	+rem(margin, .5rem 0 .25rem)
+	
 .quux
-  +rem(border, 1px solid #ccc)
+	+rem(border, 1px solid #ccc)
+	+rem(padding, double(7px))
+	+rem(margin, 0 0 0 0)
