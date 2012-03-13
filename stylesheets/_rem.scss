@@ -13,7 +13,7 @@ $base-font-size: 16px !default;
 //           1px solid #ccc
 //           1px auto 3px 0
 //           etc.
-
+//
 @mixin rem($property, $values) {
   // Find out what unit was passed. Stop as soon as we find a value
   // with a unit.
@@ -43,74 +43,76 @@ $base-font-size: 16px !default;
   }
 }
 
-// Print rem values with pixel fallback from *pixel* values.
+// Convert pixel values to rem and print them, with fallbacks to px.
 // Intended as a `private` mixin. Use the `public` @mixin rem instead.
 // 
 // $property - The css property name
 // $px-values - The value or values (space-separated list) for $property, in pixels
-
+//
 @mixin px-to-rem($property, $px-values) {
   // Number of pixels in 1rem (default: 16px/rem)
   // When converting to rems, we must divide by this ratio.
   $px-per-rem: $base-font-size / 1rem;
   
-  // Print the pixel fallback declaration first so we can override it in capable browsers.
+  // Print the pixel fallbacks. Will be overriden by rems in capable browsers.
   #{$property}: $px-values;
   
+  // Print rem values.
   // If there is only one value, print the declaration with the value converted to rems.
-  @if type-of($px-values) == "number" {
+  @if type-of($px-values) != "list" {
     #{$property}: $px-values / $px-per-rem;
   }
   @else {
-    // Otherwise, we've got a list and we'll need to convert each value in turn.
-    // Create an empty list that we can dump values into.
+    // Otherwise we've got a list; we'll need to convert each value in turn.
+    // Create an empty list for storing coverted values.
     $rem-values: ();
     @each $value in $px-values {
-      // If the value is zero, a string or a color, leave it be.
-      @if $value == 0 or type-of($value) == "string" or type-of($value) == "color" {
-        $rem-values: append($rem-values, $value);
-      } @else {
+      // Only convert numbers with units; things like strings, colours and unitless 0 pass through.
+      @if type-of($value) == "number" and not unitless($value) {
         $rem-values: append($rem-values, $value / $px-per-rem);
       }
+      @else {
+        $rem-values: append($rem-values, $value);
+      }
     }
-        
     // Print the property and its list of converted values.
     #{$property}: $rem-values;
   }
 }
 
-// Print rem values with pixel fallback from *rem* values.
+// Calculate pixel fallbacks from rem input; print rem and px fallbacks.
 // Intended as a `private` mixin. Use `public` @mixin rem instead.
 // 
 // $property - The css property name
 // $px-values - The value or values (space-separated list) for $property, in pixels
-
+//
 @mixin rem-to-px($property, $rem-values) {
   // Number of rems in 1px (default: 0.0625rem/px)
   // When converting to pixels, we must divide by this ratio.
   $rem-per-px: 1rem / $base-font-size;
   
+  // Print pixel fallbacks first.
   // If there is only one value, print the declaration with the value converted to px.
-  @if type-of($rem-values) == "number" {
+  @if type-of($rem-values) != "list" {
     #{$property}: $rem-values / $rem-per-px;
   }
   @else {
-    // Otherwise, we've got a list and we'll need to convert each value in turn.
-    // Create an empty list that we can dump values into.
+    // Otherwise we've got a list; we'll need to convert each value in turn.
+    // Create an empty list for storing coverted values.
     $px-values: ();
     @each $value in $rem-values {
-      // If the value is zero, a string or a color, leave it be.
-      @if $value == 0 or type-of($value) == "string" or type-of($value) == "color" {
+      // Only convert numbers with units; things like strings, colours and unitless 0 pass through.
+      @if type-of($value) == "number" and not unitless($value) {
+      	$px-values: append($px-values, $value / $rem-per-px);
+      }
+      @else {
         $px-values: append($px-values, $value);
-      } @else {
-        $px-values: append($px-values, $value / $rem-per-px);
       }
     }
-    
     // Print the property and its list of converted values.
     #{$property}: $px-values;
   }
   
-  // Put the rem values in place at the end, to override pixels in capable browsers.
+  // Put the rem values in place at the end.
   #{$property}: $rem-values;
 }

@@ -3,6 +3,7 @@
 @function double($value)
 	@return $value * 2
 
+/* Test @mixins rem() and px-to-rem() */
 .foo
 	+rem(font-size, 16px)
 
@@ -17,3 +18,10 @@
 	+rem(border, 1px solid #ccc)
 	+rem(padding, double(7px))
 	+rem(margin, 0 0 0 0)
+	
+/* Test @mixins rem() and rem-to-px() */
+.oof
+	+rem(font-size, 1rem)
+
+.rab
+	+rem(margin, .9375rem auto 0)
