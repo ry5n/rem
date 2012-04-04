@@ -80,5 +80,6 @@ $print-rem-px-fallbacks: false;
   padding: 21px;
   padding: 1.313rem;
 }
+```
 
 Based on [the work](https://github.com/bitmanic/rem) of [Ray Brown](https://github.com/bitmanic) and [Adam Stacoviak](https://github.com/adamstac). Huge thanks to [Chris Eppstein](http://chriseppstein.github.com) and Nathan Weizenbaum for the awesomeness that is Compass and Sass.
