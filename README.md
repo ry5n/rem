@@ -25,6 +25,7 @@ Assuming the font-size of `<html>` is 16px, rem() will output:
 ```css
 border: 1px solid #bbffff;
 border: 0.063rem solid #bbffff;
+```
 
 There are no restrictions on the style property/ies you can pass in. Values or items in a list of prop values that aren’t in px or rem pass through the mixin untouched. That makes the border example above possible, but it means you don’t even have to worry about things like:
 
@@ -38,33 +39,36 @@ For those who want to use rems without supporting older browsers, pass `false` a
 
 ## Example 1
 
-	// scss
-	// for browser default (1rem is 16px)
-	.element {
-      @include rem(padding, 10px 0 2px 5px);
-	}
+```
+// scss
+// for browser default (1rem is 16px)
+.element {
+  @include rem(padding, 10px 0 2px 5px);
+}
 
-	/* css output */
-    .element {
-      padding: 10px 0 2px 5px;
-      padding: 1rem 0 0.2rem 0.5rem;
-    }
+/* css output */
+.element {
+  padding: 10px 0 2px 5px;
+  padding: 1rem 0 0.2rem 0.5rem;
+}
+```
 
 ## Example 2
 
-	// scss
-	// for $base-line-height: 22px
-	.element {
-      @include rem(border, 1px solid #ccc);
-      @include rem(padding, $base-line-height - 1px);
-	}
+```
+// scss
+// for $base-line-height: 22px
+.element {
+  @include rem(border, 1px solid #ccc);
+  @include rem(padding, $base-line-height - 1px);
+}
 
-	/* css output */
-    .element {
-      border: 1px solid #ccc;
-      border: .063rem solid #ccc;
-      padding: 21px;
-      padding: 1.313rem;
-    }
+/* css output */
+.element {
+  border: 1px solid #ccc;
+  border: .063rem solid #ccc;
+  padding: 21px;
+  padding: 1.313rem;
+}
 
 Based on [the work](https://github.com/bitmanic/rem) of [Ray Brown](https://github.com/bitmanic) and [Adam Stacoviak](https://github.com/adamstac). Huge thanks to [Chris Eppstein](http://chriseppstein.github.com) and Nathan Weizenbaum for the awesomeness that is Compass and Sass.
