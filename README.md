@@ -35,7 +35,17 @@ There are no restrictions on the style property/ies you can pass in. Values or i
 
 (At least, not about the mixin.)
 
-For those who want to use rems without supporting older browsers, pass `false` as a parameter after your values, or set the global $print-rem-px-fallbacks to `false` before importing the partial.
+For those who want to use rems without supporting older browsers, pass `false` as a parameter after your values, or set the global $print-rem-px-fallbacks to `false` before importing the partial:
+
+```scss
+@include rem(margin, 21px auto, false);
+```
+or
+
+```scss
+$print-rem-px-fallbacks: false;
+@import "path/to/rem";
+```
 
 ## Example 1
 
