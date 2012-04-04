@@ -9,6 +9,7 @@
 
 .bar
 	+rem(margin, 15px auto 0)
+	+rem(border-left, 1px solid #bff)
 
 .baz
 	+rem(padding, 5px 15px 5px 15px)
@@ -19,9 +20,18 @@
 	+rem(padding, double(7px))
 	+rem(margin, 0 0 0 0)
 	
-/* Test @mixins rem() and rem-to-px() */
+/* Test passing rem values */
 .oof
 	+rem(font-size, 1rem)
 
 .rab
 	+rem(margin, .9375rem auto 0)
+
+/* Test passing weird mixed values */
+.zab
+	+rem(padding, .5rem 16pt 8px .5em)
+	+rem(margin, .5rem 0 .25em)
+
+/* Test @param $print-px-fallbacks set to false */
+.squee
+	+rem(margin, .5rem auto, false)

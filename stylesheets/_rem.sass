@@ -1,95 +1,54 @@
-// Base font size, measured in pixels, if not already defined (eg. in Compass' vertical rhythm module).
-// The value should be the same as the font-size value for the html element.
-
+// Base font size in pixels, if not already defined.
+// Should be the same as the font-size of the html element.
 $base-font-size: 16px !default
+$print-rem-px-fallbacks: true !default
 
-// Print the given value in rem units with a fallback declaration in pixels.
-// Accepts $values in px (or rem for convenience).
+// @private Number of pixels in 1rem.
+// For px -> rem, divide by this ratio; for the other way, multiply.
+$px-per-rem: $base-font-size / 1rem
+
+// Return pixel values as rem
+@function px-to-rem($px-value)
+  @return $px-value / $px-per-rem
+
+// Return rem values as px
+@function rem-to-px($rem-value)
+  @return $rem-value * $px-per-rem
+
+// Print the given expression with px values converted to rem, with px fallback
+// for older browsers.
 //
 // $property - The css property name to set in rems
-// $values - The value (or space-separated list of values) for $property. If a list is passed, 
-//           each value must be of the same unit or a unitless value. Allowed values lists include:
-//           1px solid #ccc
-//           1px auto 3px 0
-//           etc.
+// $values	 - The value (or space-separated list of values) for $property.
 //
-=rem($property, $values)
-  // Find out what unit was passed. Stop as soon as we find a value
-  // with a unit.
-  $unit: ""
-  @if type-of($values) == "list"
-    $i: 1
-    $exit: false
-    @while $i <= length($values) and not $exit
-      $value: nth($values, $i)
-      // If the value is a number with unit, set $unit and exit
-      @if type-of($value) == "number" and not unitless($value)
-        $unit: unit($value)
-        $exit: true
-      // Increment iterator before repeating
-      $i: $i + 1
-  @else
-    $unit: unit($values)
-  // Use the conversion mixin for the appropriate input unit.
-  @if $unit == "rem"
-    +rem-to-px($property, $values)
-  @else
-    +px-to-rem($property, $values)
-
-// Convert pixel values to rem and print them, with fallbacks to px.
-// Intended as a `private` mixin. Use the `public` @mixin rem instead.
-// 
-// $property - The css property name
-// $px-values - The value or values (space-separated list) for $property, in pixels
-//
-=px-to-rem($property, $px-values)
-  // Number of pixels in 1rem (default: 16px/rem)
-  // When converting to rems, we must divide by this ratio.
-  $px-per-rem: $base-font-size / 1rem
-  // Print the pixel fallbacks. Will be overriden by rems in capable browsers.
-  #{$property}: $px-values
-  // Print rem values.
-  // If there is only one value, print the declaration with the value converted to rems.
-  @if type-of($px-values) != "list"
-    #{$property}: $px-values / $px-per-rem
-  @else
-    // Otherwise we've got a list; we'll need to convert each value in turn.
-    // Create an empty list for storing coverted values.
-    $rem-values: ()
-    @each $value in $px-values
-      // Only convert numbers with units; things like strings, colours and unitless 0 pass through.
-      @if type-of($value) == "number" and not unitless($value)
-        $rem-values: append($rem-values, $value / $px-per-rem)
+=rem($property, $values, $print-px-fallbacks: $print-rem-px-fallbacks)
+  // Create a couple of empty lists as output buffers.
+  $px-values: ()
+  $rem-values: ()
+  
+  // If $values isn't a list (because it's only got one value) convert it
+  // to a list so we don't have to handle separate cases.
+  @if type-of($values) != "list"
+    $values: join((), $values)
+    
+  // Loop through the $values list
+  @each $value in $values
+    // For each property value, if it's in rem or px, derive both rem and
+    // px values for it and add those to the end of the appropriate buffer.
+    @if type-of($value) == number and not unitless($value) and (unit($value) == px or unit($value) == rem)
+      @if unit($value) == px
+        $px-values: join($px-values, $value)
+        $rem-values: join($rem-values, px-to-rem($value))
       @else
-        $rem-values: append($rem-values, $value)
-    // Print the property and its list of converted values.
-    #{$property}: $rem-values
-
-// Calculate pixel fallbacks from rem input; print rem and px fallbacks.
-// Intended as a `private` mixin. Use `public` @mixin rem instead.
-// 
-// $property - The css property name
-// $px-values - The value or values (space-separated list) for $property, in pixels
-//
-=rem-to-px($property, $rem-values)
-  // Number of rems in 1px (default: 0.0625rem/px)
-  // When converting to pixels, we must divide by this ratio.
-  $rem-per-px: 1rem / $base-font-size
-  // Print pixel fallbacks first.
-  // If there is only one value, print the declaration with the value converted to px.
-  @if type-of($rem-values) != "list"
-    #{$property}: $rem-values / $rem-per-px
-  @else
-    // Otherwise we've got a list; we'll need to convert each value in turn.
-    // Create an empty list for storing coverted values.
-    $px-values: ()
-    @each $value in $rem-values
-      // Only convert numbers with units; things like strings, colours and unitless 0 pass through.
-      @if type-of($value) == "number" and not unitless($value)
-        $px-values: append($px-values, $value / $rem-per-px)
-      @else
-        $px-values: append($px-values, $value)
-    // Print the property and its list of converted values.
+        $px-values: join($px-values, rem-to-px($value))
+        $rem-values: join($rem-values, $value)
+    @else
+      $px-values: join($px-values, $value)
+      $rem-values: join($rem-values, $value)
+      
+  // By default, print pixel fallbacks for browsers that don't understand rem.
+  @if $print-px-fallbacks
     #{$property}: $px-values
-  // Put the rem values in place at the end.
+  
+  // Print rem values for everyone else (overrides pixel values).
   #{$property}: $rem-values

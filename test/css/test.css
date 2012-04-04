@@ -7,6 +7,8 @@
 .bar {
   margin: 15px auto 0;
   margin: 0.938rem auto 0;
+  border-left: 1px solid #bbffff;
+  border-left: 0.063rem solid #bbffff;
 }
 
 .baz {
@@ -25,7 +27,7 @@
   margin: 0 0 0 0;
 }
 
-/* Test @mixins rem() and rem-to-px() */
+/* Test passing rem values */
 .oof {
   font-size: 16px;
   font-size: 1rem;
@@ -34,4 +36,17 @@
 .rab {
   margin: 15px auto 0;
   margin: 0.938rem auto 0;
+}
+
+/* Test passing weird mixed values */
+.zab {
+  padding: 8px 16pt 8px 0.5em;
+  padding: 0.5rem 16pt 0.5rem 0.5em;
+  margin: 8px 0 0.25em;
+  margin: 0.5rem 0 0.25em;
+}
+
+/* Test @param $print-px-fallbacks set to false */
+.squee {
+  margin: 0.5rem auto;
 }
