@@ -21,7 +21,8 @@ $px-per-rem: $base-font-size / 1rem;
 // for older browsers.
 //
 // $property - The css property name to set in rems
-// $values	 - The value (or space-separated list of values) for $property.
+// $values - The value (or space-separated list of values) for $property
+// $print-px-fallbacks - Boolean, default: true; whether to print pixel fallback values
 //
 @mixin rem($property, $values, $print-px-fallbacks: $print-rem-px-fallbacks) {
 	// Create a couple of empty lists as output buffers.

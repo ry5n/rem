@@ -3,7 +3,7 @@
 @function double($value)
 	@return $value * 2
 
-/* Test @mixins rem() and px-to-rem() */
+/* Test rem() for pixel values and mixed values */
 .foo
 	+rem(font-size, 16px)
 
@@ -13,7 +13,6 @@
 
 .baz
 	+rem(padding, 5px 15px 5px 15px)
-	+rem(margin, .5rem 0 .25rem)
 	
 .quux
 	+rem(border, 1px solid #ccc)
@@ -32,6 +31,6 @@
 	+rem(padding, .5rem 16pt 8px .5em)
 	+rem(margin, .5rem 0 .25em)
 
-/* Test @param $print-px-fallbacks set to false */
+/* Test not printing pixel fallbacks */
 .squee
 	+rem(margin, .5rem auto, false)

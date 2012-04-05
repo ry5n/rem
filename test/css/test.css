@@ -1,4 +1,4 @@
-/* Test @mixins rem() and px-to-rem() */
+/* Test rem() for pixel values and mixed values */
 .foo {
   font-size: 16px;
   font-size: 1rem;
@@ -14,8 +14,6 @@
 .baz {
   padding: 5px 15px 5px 15px;
   padding: 0.313rem 0.938rem 0.313rem 0.938rem;
-  margin: 8px 0 4px;
-  margin: 0.5rem 0 0.25rem;
 }
 
 .quux {
@@ -46,7 +44,7 @@
   margin: 0.5rem 0 0.25em;
 }
 
-/* Test @param $print-px-fallbacks set to false */
+/* Test not printing pixel fallbacks */
 .squee {
   margin: 0.5rem auto;
 }
