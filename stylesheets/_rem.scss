@@ -1,7 +1,7 @@
 // Base font size in pixels, if not already defined.
 // Should be the same as the font-size of the html element.
 $base-font-size: 16px !default;
-$print-rem-px-fallbacks: true !default;
+$use-rem-px-fallbacks: true !default;
 
 // @private Number of pixels in 1rem.
 // For px -> rem, divide by this ratio; for the other way, multiply.
@@ -22,9 +22,9 @@ $px-per-rem: $base-font-size / 1rem;
 //
 // $property - The css property name to set in rems
 // $values - The value (or space-separated list of values) for $property
-// $print-px-fallbacks - Boolean, default: true; whether to print pixel fallback values
+// $use-px-fallbacks - Boolean, default: true; whether to print pixel fallback values
 //
-@mixin rem($property, $values, $print-px-fallbacks: $print-rem-px-fallbacks) {
+@mixin rem($property, $values, $use-px-fallbacks: $use-rem-px-fallbacks) {
 	// Create a couple of empty lists as output buffers.
 	$px-values: ();
 	$rem-values: ();
@@ -56,7 +56,7 @@ $px-per-rem: $base-font-size / 1rem;
 	}
 	
 	// By default, print pixel fallbacks for browsers that don't understand rem.
-	@if $print-px-fallbacks {
+	@if $use-px-fallbacks {
 		#{$property}: $px-values;
 	}
 	
