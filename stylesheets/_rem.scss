@@ -1,7 +1,7 @@
 // Base font size in pixels, if not already defined.
 // Should be the same as the font-size of the html element.
 $base-font-size: 16px !default;
-$print-rem-px-fallbacks: true !default;
+$rem-with-px-fallback: true !default;
 
 // @private Number of pixels in 1rem.
 // For px -> rem, divide by this ratio; for the other way, multiply.
@@ -17,24 +17,23 @@ $px-per-rem: $base-font-size / 1rem;
 	@return $rem-value * $px-per-rem;
 }
 
-// Print the given expression with px values converted to rem, with px fallback
-// for older browsers.
+// For the given property, use rem units with px as a fallback value for older
+// browsers.
 //
-// $property - The css property name to set in rems
-// $values - The value (or space-separated list of values) for $property
-// $print-px-fallbacks - Boolean, default: true; whether to print pixel fallback values
+// $property - The css property name.
+// $values - The value (or space-separated list of values) for the property.
+// $use-px-fallback - Boolean, default: true; whether to use pixel fallback values
 //
-@mixin rem($property, $values, $print-px-fallbacks: $print-rem-px-fallbacks) {
+@mixin rem($property, $values, $use-px-fallback: $rem-with-px-fallback) {
 	// Create a couple of empty lists as output buffers.
 	$px-values: ();
 	$rem-values: ();
-	
-	// If $values isn't a list (because it's only got one value) convert it
-	// to a list so we don't have to handle separate cases.
+
+	// Ensure $values is a list.
 	@if type-of($values) != "list" {
 		$values: join((), $values);
 	}
-	
+
 	// Loop through the $values list
 	@each $value in $values {
 		// For each property value, if it's in rem or px, derive both rem and
@@ -54,12 +53,12 @@ $px-per-rem: $base-font-size / 1rem;
 			$rem-values: join($rem-values, $value);
 		}
 	}
-	
-	// By default, print pixel fallbacks for browsers that don't understand rem.
-	@if $print-px-fallbacks {
+
+	// Use pixel fallback for browsers that don't understand rem units.
+	@if $use-px-fallback {
 		#{$property}: $px-values;
 	}
-	
-	// Print rem values for everyone else (overrides pixel values).
+
+	// Use rem values for everyone else (overrides pixel values).
 	#{$property}: $rem-values;
 }
