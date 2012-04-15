@@ -38,7 +38,7 @@ $px-per-rem: $base-font-size / 1rem;
 	@each $value in $values {
 		// For each property value, if it's in rem or px, derive both rem and
 		// px values for it and add those to the end of the appropriate buffer.
-		@if(type-of($value) == number and not unitless($value) and (unit($value) == px or unit($value) == rem)) {
+		@if (type-of($value) == number and not unitless($value) and (unit($value) == px or unit($value) == rem)) {
 			@if unit($value) == px {
 				$px-values: join($px-values, $value);
 				$rem-values: join($rem-values, px-to-rem($value));
