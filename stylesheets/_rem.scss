@@ -1,21 +1,7 @@
-// Base font size in pixels, if not already defined.
-// Should be the same as the font-size of the html element.
-$base-font-size: 16px !default;
+
+@import "units";
+
 $rem-with-px-fallback: true !default;
-
-// @private Number of pixels in 1rem.
-// For px -> rem, divide by this ratio; for the other way, multiply.
-$px-per-rem: $base-font-size / 1rem;
-
-// Return pixel values as rem
-@function px-to-rem($px-value) {
-	@return $px-value / $px-per-rem;
-}
-
-// Return rem values as px
-@function rem-to-px($rem-value) {
-	@return $rem-value * $px-per-rem;
-}
 
 // For the given property, use rem units with px as a fallback value for older
 // browsers.
@@ -38,13 +24,13 @@ $px-per-rem: $base-font-size / 1rem;
 	@each $value in $values {
 		// For each property value, if it's in rem or px, derive both rem and
 		// px values for it and add those to the end of the appropriate buffer.
-		@if (type-of($value) == number and not unitless($value) and (unit($value) == px or unit($value) == rem)) {
+		@if type-of($value) == number and not unitless($value) and (unit($value) == px or unit($value) == rem) {
 			@if unit($value) == px {
 				$px-values: join($px-values, $value);
-				$rem-values: join($rem-values, px-to-rem($value));
+				$rem-values: join($rem-values, convert-font-unit($value, rem));
 			}
 			@else {
-				$px-values: join($px-values, rem-to-px($value));
+				$px-values: join($px-values, convert-font-unit($value, px));
 				$rem-values: join($rem-values, $value);
 			}
 		}
