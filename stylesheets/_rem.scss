@@ -77,9 +77,10 @@ $rem-with-px-fallback: true !default;
 //
 // $property - The CSS property name.
 // $values - The value (or space-separated list of values) for the property.
-// $use-px-fallback - Boolean, default: true; whether to use pixel fallback values
+// $rem-with-px-fallback - Boolean, default: true; whether to use pixel fallback values.
+// $important – Boolean, default: false; whether to add an !important flag to the declaration.
 //
-@mixin rem($property, $values, $important:'', $use-px-fallback: $rem-with-px-fallback) {
+@mixin rem($property, $values, $use-px-fallback: $rem-with-px-fallback, $important: false) {
 	// Create a couple of empty lists as output buffers.
 	$px-values: ();
 	$rem-values: ();
@@ -91,11 +92,12 @@ $rem-with-px-fallback: true !default;
 
 	// Loop through the $values list
 	@each $value in $values {
-		// For each property value, if it's a string (like 'auto' or 'inherit') or a zero
+		// Pass through string values like `auto` or `inherit`.
 		@if type-of($value) == string or $value == 0 {
 			$px-values: join($px-values, $value);
 			$rem-values: join($rem-values, $value);
 		}
+
 		// For each property value, if it's in rem or px, derive both rem and
 		// px values for it and add those to the end of the appropriate buffer.
 		// Ensure all pixel values are rounded to the nearest pixel.
@@ -115,8 +117,8 @@ $rem-with-px-fallback: true !default;
 		}
 	}
 
-	// See if property has !important declaration set
-	@if $important == !important {
+	// Add an !important flag if necessary.
+	@if $important {
 		$px-values: #{ $px-values + " !important" };
 		$rem-values: #{ $rem-values + " !important" };
 	}

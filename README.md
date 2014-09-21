@@ -2,7 +2,7 @@ rem() is a Sass mixin for setting css properties in rems with fallback values in
 
 ## Signature
 
-`@mixin rem($property, $values, [$use-px-fallbacks: $rem-with-px-fallbacks])`
+`@mixin rem($property, $values, [$use-px-fallbacks: $rem-with-px-fallbacks], [$important: false])`
 
 ## Usage
 
@@ -50,11 +50,15 @@ There are no restrictions on the style property/ies you can pass in. Values that
 .crazy-units {
   @include rem(padding, .5rem 16pt 8px .5em);
 }
+
+.mixed-values {
+  @include rem(margin, 1.25rem auto);
+}
 ```
 
 ## Controlling pixel fallbacks
 
-You can use the mixin without supporting older browsers either one a case-by-case basis or globally.
+You can use the mixin without supporting older browsers either on a case-by-case basis or globally.
 
 To control fallbacks at the mixin level as-needed, pass `false` as a parameter after your values:
 
@@ -69,4 +73,14 @@ $print-rem-px-fallbacks: false;
 @import "path/to/rem";
 ```
 
-Based on [the work](https://github.com/bitmanic/rem) of [Ray Brown](https://github.com/bitmanic) and [Adam Stacoviak](https://github.com/adamstac). Huge thanks to [Chris Eppstein](http://chriseppstein.github.com) and Nathan Weizenbaum for the awesomeness that is Compass and Sass.
+## Adding !important
+
+Since v 0.3 (September 2014) you can pass a final param to have `!important` appended to declarations:
+
+```scss
+@include rem(margin, 21px auto, $important: true);
+```
+
+Based on [the work](https://github.com/bitmanic/rem) of [Ray Brown](https://github.com/bitmanic) and [Adam Stacoviak](https://github.com/adamstac). Thanks to additional contributors [@JohnAlbin](https://github.com/JohnAlbin) and [@Volker-E](https://github.com/Volker-E).
+
+Special thanks to [Chris Eppstein](http://chriseppstein.github.com) and Nathan Weizenbaum for their work creating and maintaining Compass and Sass.

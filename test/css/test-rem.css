@@ -1,50 +1,91 @@
 /* Test rem() for pixel values and mixed values */
 .foo {
+  /* 16px */
+  /* 1rem */
   font-size: 16px;
   font-size: 1rem;
 }
 
 .bar {
+  /* 15px auto 0 */
+  /* 0.9375rem auto 0 */
   margin: 15px auto 0;
-  margin: 0.938rem auto 0;
+  margin: 0.9375rem auto 0;
+  /* 1px solid #bff */
+  /* 0.0625rem solid #bff  */
   border-left: 1px solid #bbffff;
-  border-left: 0.063rem solid #bbffff;
+  border-left: 0.0625rem solid #bbffff;
 }
 
 .baz {
+  /* 5px 15px 5px 15px */
+  /* 0.3125rem 0.9375rem 0.3125rem 0.9375rem  */
   padding: 5px 15px 5px 15px;
-  padding: 0.313rem 0.938rem 0.313rem 0.938rem;
+  padding: 0.3125rem 0.9375rem 0.3125rem 0.9375rem;
 }
 
 .quux {
+  /* 1px solid #ccc */
+  /* 0.0625rem solid #ccc */
   border: 1px solid #cccccc;
-  border: 0.063rem solid #cccccc;
+  border: 0.0625rem solid #cccccc;
+  /* 14px */
+  /* 0.875rem */
   padding: 14px;
   padding: 0.875rem;
+  /* 0 */
+  /* 0 */
   margin: 0 0 0 0;
   margin: 0 0 0 0;
 }
 
-/* Test passing rem values */
-.oof {
+/* Test passing rem units */
+.rem-1 {
+  /* 16px */
+  /* 1rem */
   font-size: 16px;
   font-size: 1rem;
-}
-
-.rab {
+  /* 15px auto 0 */
+  /* 0.9375rem auto 0 */
   margin: 15px auto 0;
-  margin: 0.938rem auto 0;
+  margin: 0.9375rem auto 0;
 }
 
-/* Test passing weird mixed values */
-.zab {
+/* Test passing extreme mixed units */
+.mixed-units {
+  /* 8px 16pt 8px 0.5em */
+  /* 0.5rem 16px 0.5rem 0.5em */
   padding: 8px 16pt 8px 0.5em;
   padding: 0.5rem 16pt 0.5rem 0.5em;
+  /* 8px 0 0.25em */
+  /* 0.5rem 0 0.25em */
   margin: 8px 0 0.25em;
   margin: 0.5rem 0 0.25em;
 }
 
 /* Test not printing pixel fallbacks */
-.squee {
+.no-fallbacks {
+  /* (no fallback) */
+  /* 0.5rem auto */
   margin: 0.5rem auto;
+}
+
+/* Test passing `inherit` and `auto` */
+.mixed-values {
+  /* 18px auto */
+  /* 1.125rem auto */
+  margin: 18px auto;
+  margin: 1.125rem auto;
+  /* 16px inherit */
+  /* 1rem inherit */
+  padding: 16px inherit;
+  padding: 1rem inherit;
+}
+
+/* Test with !important */
+.with-important {
+  /* 18px !important */
+  /* 1.125rem !important */
+  font-size: 18px !important;
+  font-size: 1.125rem !important;
 }

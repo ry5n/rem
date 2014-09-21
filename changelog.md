@@ -1,8 +1,12 @@
 Changelog for [github.com/ry5n/rem]()
 ===
 
+0.4 (September 2014)
+---
+- Fix compile error when passing string values (e.g. `auto`, `inherit`).
+- Add additional boolean param `$important` for appending the `!important` flag to declarations.
 
-0.3b (April 3, 2012)
+0.3 (April 3, 2012)
 ---
 ### Rewrite the mixin from scratch
 - Ground-up rewrite with a completely different implementation that is much shorter, simpler, more elegant and more robust

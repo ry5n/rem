@@ -5,32 +5,75 @@
 
 /* Test rem() for pixel values and mixed values */
 .foo
+	/* 16px */
+	/* 1rem */
 	+rem(font-size, 16px)
 
 .bar
+	/* 15px auto 0 */
+	/* 0.9375rem auto 0 */
 	+rem(margin, 15px auto 0)
+
+	/* 1px solid #bff */
+	/* 0.0625rem solid #bff  */
 	+rem(border-left, 1px solid #bff)
 
 .baz
+	/* 5px 15px 5px 15px */
+	/* 0.3125rem 0.9375rem 0.3125rem 0.9375rem  */
 	+rem(padding, 5px 15px 5px 15px)
-	
+
 .quux
+	/* 1px solid #ccc */
+	/* 0.0625rem solid #ccc */
 	+rem(border, 1px solid #ccc)
+
+	/* 14px */
+	/* 0.875rem */
 	+rem(padding, double(7px))
+
+	/* 0 */
+	/* 0 */
 	+rem(margin, 0 0 0 0)
-	
-/* Test passing rem values */
-.oof
+
+/* Test passing rem units */
+.rem-1
+	/* 16px */
+	/* 1rem */
 	+rem(font-size, 1rem)
 
-.rab
+	/* 15px auto 0 */
+	/* 0.9375rem auto 0 */
 	+rem(margin, .9375rem auto 0)
 
-/* Test passing weird mixed values */
-.zab
+/* Test passing extreme mixed units */
+.mixed-units
+	/* 8px 16pt 8px 0.5em */
+	/* 0.5rem 16px 0.5rem 0.5em */
 	+rem(padding, .5rem 16pt 8px .5em)
+
+	/* 8px 0 0.25em */
+	/* 0.5rem 0 0.25em */
 	+rem(margin, .5rem 0 .25em)
 
 /* Test not printing pixel fallbacks */
-.squee
+.no-fallbacks
+	/* (no fallback) */
+	/* 0.5rem auto */
 	+rem(margin, .5rem auto, false)
+
+/* Test passing `inherit` and `auto` */
+.mixed-values
+	/* 18px auto */
+	/* 1.125rem auto */
+	+rem(margin, 18px auto)
+
+	/* 16px inherit */
+	/* 1rem inherit */
+	+rem(padding, 1rem inherit)
+
+/* Test with !important */
+.with-important
+	/* 18px !important */
+	/* 1.125rem !important */
+	+rem(font-size, 18px, $important: true)
